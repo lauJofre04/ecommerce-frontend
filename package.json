@@ -34,7 +34,8 @@
     "@angular/ssr": "^21.1.1",
     "express": "^5.1.0",
     "rxjs": "~7.8.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "zone.js": "^0.16.1"
   },
   "devDependencies": {
     "@angular/build": "^21.1.1",
@@ -42,7 +43,7 @@
     "@angular/compiler-cli": "^21.1.0",
     "@tailwindcss/postcss": "^4.2.1",
     "@types/express": "^5.0.1",
-    "@types/node": "^20.17.19",
+    "@types/node": "^20.19.37",
     "autoprefixer": "^10.4.27",
     "jsdom": "^27.1.0",
     "postcss": "^8.5.8",

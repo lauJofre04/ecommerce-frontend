@@ -1,0 +1,23 @@
+<div class="mt-12">
+  <h3 class="text-xl font-bold mb-4 text-gray-700">Gestionar Productos Existentes</h3>
+  <div class="overflow-hidden rounded-xl border border-gray-200 shadow-sm">
+    <table class="w-full text-left bg-white">
+      <thead class="bg-gray-50 text-gray-600 text-sm uppercase">
+        <tr>
+          <th class="p-4 font-bold">Producto</th>
+          <th class="p-4 font-bold text-right">Acción</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        <tr *ngFor="let p of productosExistentes" class="hover:bg-gray-50">
+          <td class="p-4 font-medium text-gray-800">{{ p.nombre }}</td>
+          <td class="p-4 text-right">
+            <button (click)="eliminar(p.id)" class="text-red-500 hover:text-red-700 font-bold px-3 py-1 rounded-lg hover:bg-red-50 transition">
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
