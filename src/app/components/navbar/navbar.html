@@ -1,17 +1,66 @@
 <nav class="bg-gray-900 text-white p-4 shadow-xl sticky top-0 z-50">
   <div class="max-w-6xl mx-auto flex justify-between items-center">
-    <a routerLink="/" class="text-2xl font-black tracking-tighter hover:scale-105 transition-transform flex items-center gap-2">
-      <span class="bg-blue-600 px-2 py-1 rounded text-sm">TECH</span>
-      STORE
-    </a>
     
-    <div class="flex items-center gap-6">
+    <div class="flex items-center gap-8">
+      <a routerLink="/" class="text-2xl font-black tracking-tighter hover:scale-105 transition-transform flex items-center gap-2">
+        <span class="bg-blue-600 px-2 py-1 rounded text-sm">TECH</span>
+        STORE
+      </a>
+      
       <a routerLink="/" routerLinkActive="text-blue-400" [routerLinkActiveOptions]="{exact: true}" class="hover:text-blue-400 transition font-medium">
         Tienda
       </a>
-      <a routerLink="/admin" routerLinkActive="bg-blue-700" class="bg-blue-600 px-4 py-2 rounded-lg font-bold hover:bg-blue-700 transition">
-        Panel Admin
-      </a>
+    </div>
+
+    <div class="flex items-center gap-6">
+      
+      <div routerLink="/carrito" class="relative cursor-pointer hover:scale-110 transition-transform flex items-center">
+        <span class="text-2xl">🛒</span>
+        <span class="bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center absolute -top-2 -right-3 shadow-sm">
+          {{ cartCount }}
+        </span>
+      </div>
+
+      <div *ngIf="!authService.isLoggedIn()" class="flex items-center gap-3">
+        <a routerLink="/login" class="bg-blue-600 text-white px-5 py-2 rounded-lg font-bold hover:bg-blue-700 transition">
+          Iniciar Sesión
+        </a>
+        <a routerLink="/registro" class="bg-green-600 text-white px-5 py-2 rounded-lg font-bold hover:bg-green-700 transition">
+          Registrarse
+        </a>
+      </div>
+
+      <div class="relative" *ngIf="authService.isLoggedIn()">
+        <button (click)="toggleMenu()" class="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-lg hover:bg-gray-200 transition">
+          <span class="font-bold text-gray-700">Mi Cuenta</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+
+        <div *ngIf="isMenuOpen" class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50 text-gray-800">
+          
+          <a *ngIf="authService.getRole() === 'ADMIN'" 
+             routerLink="/admin" 
+             (click)="toggleMenu()"
+             class="block px-4 py-3 hover:bg-blue-50 hover:text-blue-600 font-medium cursor-pointer">
+             ⚙️ Panel Admin
+          </a>
+          
+          <a *ngIf="authService.getRole() === 'CLIENTE'" 
+             routerLink="/perfil" 
+             (click)="toggleMenu()"
+             routerLinkActive="text-blue-600 font-bold"
+             class="block px-4 py-3 hover:bg-blue-50 hover:text-blue-600 font-medium transition cursor-pointer">
+             👤 Mi Perfil
+          </a>
+
+          <button (click)="logout()" class="w-full text-left px-4 py-3 text-red-500 hover:bg-red-50 font-medium border-t border-gray-100">
+             Cerrar Sesión
+          </button>
+        </div>
+      </div>
+
     </div>
   </div>
 </nav>

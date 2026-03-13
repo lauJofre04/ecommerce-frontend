@@ -1,23 +1,186 @@
-<div class="mt-12">
-  <h3 class="text-xl font-bold mb-4 text-gray-700">Gestionar Productos Existentes</h3>
-  <div class="overflow-hidden rounded-xl border border-gray-200 shadow-sm">
-    <table class="w-full text-left bg-white">
-      <thead class="bg-gray-50 text-gray-600 text-sm uppercase">
-        <tr>
-          <th class="p-4 font-bold">Producto</th>
-          <th class="p-4 font-bold text-right">Acción</th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-gray-100">
-        <tr *ngFor="let p of productosExistentes" class="hover:bg-gray-50">
-          <td class="p-4 font-medium text-gray-800">{{ p.nombre }}</td>
-          <td class="p-4 text-right">
-            <button (click)="eliminar(p.id)" class="text-red-500 hover:text-red-700 font-bold px-3 py-1 rounded-lg hover:bg-red-50 transition">
-              Eliminar
+
+    <div class="max-w-4xl mx-auto my-10 px-4">
+      <div class="bg-white p-6 rounded-xl shadow-md mb-8 border border-gray-100">
+        <h3 class="text-xl font-bold text-gray-800 mb-4">Gestionar Categorías</h3>
+        
+        <div class="flex gap-2 mb-6">
+          <input type="text" [(ngModel)]="nuevaCategoriaNombre" name="nuevaCat" 
+                class="flex-grow px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none" 
+                placeholder="Nombre de la nueva categoría (ej: Teclados)">
+          <button (click)="agregarCategoria()" 
+                  class="bg-green-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-green-700 transition">
+            + Crear
+          </button>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+          <div *ngFor="let cat of categorias" 
+              class="flex items-center bg-gray-100 px-3 py-1 rounded-full border border-gray-200">
+            <span class="text-sm font-medium text-gray-700">{{ cat.nombre }}</span>
+            <button (click)="eliminarCategoria(cat.id)" class="ml-2 text-red-500 hover:text-red-700 font-bold">
+              ×
             </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+          </div>
+          <p *ngIf="categorias.length === 0" class="text-gray-400 text-sm italic">No hay categorías creadas aún.</p>
+        </div>
+      </div>
+      
+      <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">🚀 Panel de Administrador</h2>
+        
+        <form (ngSubmit)="onSubmit()" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Nombre del Producto</label>
+            <input type="text" [(ngModel)]="newProduct.nombre" name="nombre" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Descripción</label>
+            <textarea [(ngModel)]="newProduct.descripcion" name="descripcion" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Precio ($)</label>
+              <input type="number" [(ngModel)]="newProduct.precio" name="precio" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Stock</label>
+              <input type="number" [(ngModel)]="newProduct.stock" name="stock" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Categoría</label>
+            <select [(ngModel)]="newProduct.categoriaId" name="categoriaId" 
+                    class="w-full px-3 py-2 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="" disabled selected>Seleccioná una categoría</option>
+              <option *ngFor="let cat of categorias" [value]="cat.id">
+                {{ cat.nombre }}
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Imagen del Producto</label>
+            <input type="file" (change)="onFileSelected($event)" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+          </div>
+
+
+          <div class="flex gap-4 mt-4">
+            <button type="submit" 
+                    class="flex-1 bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition">
+              {{ productoEnEdicionId ? 'Actualizar Producto' : 'Guardar Producto' }}
+            </button>
+
+            <button *ngIf="productoEnEdicionId " 
+                    type="button" 
+                    (click)="cancelarEdicion()"
+                    class="bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded-lg hover:bg-gray-300 transition">
+              Cancelar
+            </button>
+          </div>
+      
+
+      <div class="mt-12 bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+        <h3 class="text-xl font-bold mb-4 text-gray-700">📦 Gestionar Productos</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left">
+            <thead class="bg-gray-50 text-gray-600 text-sm uppercase">
+              <tr>
+                <th class="p-4 font-bold">Producto</th>
+                <th class="p-4 font-bold text-right">Acción</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr *ngFor="let p of productosExistentes" class="hover:bg-gray-50 transition">
+                <td class="p-4 font-medium text-gray-800">{{ p.nombre }}</td>
+                <td class="text-right py-4 flex justify-end gap-4">
+  
+                  <button type="button"
+                          (click)="cargarParaEditar(p)" 
+                          class="font-medium text-blue-600 hover:text-blue-800 transition">
+                    Editar
+                  </button>
+
+                  <button type="button"
+                          (click)="eliminar(p.id)" 
+                          class="font-medium text-red-500 hover:text-red-700 transition">
+                    Eliminar
+                  </button>
+                  
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-12 bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold text-gray-700">🛒 Gestionar Pedidos</h3>
+          <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full">
+            {{ ordenes.length }} Pedidos
+          </span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left">
+            <thead class="bg-gray-50 text-gray-600 text-sm uppercase">
+              <tr>
+                <th class="p-4 font-bold">Pedido</th>
+                <th class="p-4 font-bold">Cliente</th>
+                <th class="p-4 font-bold">Total</th>
+                <th class="p-4 font-bold text-center">Estado</th>
+                <th class="p-4 font-bold text-center">Acciones</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              
+              <tr *ngFor="let orden of ordenes" class="hover:bg-gray-50 transition text-sm">
+                <td class="p-4 font-medium text-gray-800">
+                  #{{ orden.id }}<br>
+                  <span class="text-xs text-gray-400">{{ orden.fechaOrden | date:'dd/MM/yy HH:mm' }}</span>
+                </td>
+                
+                <td class="p-4">
+                  <span class="font-medium capitalize">{{ orden.usuario?.nombre }} {{ orden.usuario?.apellido }}</span><br>
+                  <span class="text-xs text-gray-500">{{ orden.usuario?.email }}</span>
+                </td>
+                
+                <td class="p-4 font-bold text-blue-600">${{ orden.total }}</td>
+                
+                <td class="p-4 text-center">
+                  <span [ngClass]="{
+                    'bg-yellow-100 text-yellow-700': orden.estado === 'PENDIENTE',
+                    'bg-green-100 text-green-700': orden.estado === 'APROBADO',
+                    'bg-red-100 text-red-700': orden.estado === 'CANCELADA'
+                  }" class="px-2 py-1 rounded-full text-xs font-bold uppercase">
+                    {{ orden.estado }}
+                  </span>
+                </td>
+                
+                <td class="p-4 flex justify-center gap-2">
+                  <button *ngIf="orden.estado !== 'APROBADO'" 
+                          (click)="cambiarEstadoOrden(orden.id, 'APROBADO')"
+                          class="bg-green-500 hover:bg-green-600 text-white p-2 rounded transition shadow-sm" 
+                          title="Aprobar Pedido">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </button>
+                  <button *ngIf="orden.estado !== 'CANCELADA'" 
+                          (click)="cambiarEstadoOrden(orden.id, 'CANCELADA')"
+                          class="bg-red-500 hover:bg-red-600 text-white p-2 rounded transition shadow-sm" 
+                          title="Cancelar Pedido">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                  </button>
+                </td>
+              </tr>
+              
+            </tbody>
+          </table>
+
+          <div *ngIf="cargandoOrdenes" class="text-center py-8 text-gray-500 text-sm">Cargando pedidos...</div>
+          <div *ngIf="!cargandoOrdenes && ordenes.length === 0" class="text-center py-8 text-gray-500 text-sm font-medium">
+            No hay pedidos registrados en el sistema.
+          </div>
+        </div>
+      </div>
+
+    </div>
