@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // Necesario para ngModel
-import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink, RouterModule],
   templateUrl: './login.html'
 })
 export class Login {
@@ -15,32 +15,45 @@ export class Login {
     email: '',
     password: ''
   };
-
+  
+  // 👇 1. Agregamos esta variable para atajar el error
+  mensajeError: string | null = null;
+  verPassword = false;
   constructor(
     private authService: AuthService,
     private router: Router
   ) {}
 
   onSubmit() {
+    // Limpiamos el error viejo si el usuario vuelve a intentar
+    this.mensajeError = null;
+
     this.authService.login(this.credenciales).subscribe({
       next: (res: any) => {
-        // 1. Atajamos el token de seguridad y lo guardamos
         const token = res.access_token || res.token;
         if (token) {
           localStorage.setItem('token', token);
         }
 
-        // 2. Atajamos los datos del usuario y los guardamos como texto (JSON)
-        // (Atajamos 'res.usuario', 'res.user' o 'res' dependiendo de cómo lo mande tu backend)
         const datosUsuario = res.usuario || res.user || res;
         localStorage.setItem('usuario', JSON.stringify(datosUsuario));
 
-        // 3. Ahora sí, con los datos en la mochila, viajamos al inicio
         this.router.navigate(['/']);
       },
       error: (err) => {
-        alert('Credenciales incorrectas');
-        console.error(err);
+        // 👇 2. Atrapamos el mensaje que manda NestJS en la respuesta de error
+        if (err.error && err.error.message) {
+          // Si es un array de errores (a veces pasa con las validaciones de Nest)
+          if (Array.isArray(err.error.message)) {
+            this.mensajeError = err.error.message[0];
+          } else {
+            // Este es el mensaje de "Por favor, verificá tu correo..."
+            this.mensajeError = err.error.message;
+          }
+        } else {
+          this.mensajeError = 'Credenciales incorrectas o error en el servidor.';
+        }
+        console.error('Error del backend:', err);
       }
     });
   }

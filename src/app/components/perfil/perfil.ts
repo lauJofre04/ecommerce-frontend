@@ -2,8 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http'; // <-- 1. Importamos HttpClient
+import { HttpClient } from '@angular/common/http';
 import { OrdenesService } from '../../services/ordenes';
+// 👇 1. Importamos jwtDecode
+import { jwtDecode } from "jwt-decode"; 
 
 @Component({
   selector: 'app-perfil',
@@ -13,42 +15,57 @@ import { OrdenesService } from '../../services/ordenes';
 })
 export class Perfil implements OnInit {
   usuario: any = {
-    id: null, // <-- Aseguramos tener el ID
+    id: null, 
     nombre: '', apellido: '', email: '', 
     direccion: '', ciudad: '', provincia: '', codigoPostal: ''
   };
   
   pestanaActiva: string = 'datos'; 
-  ordenes: any[] = []; // Para guardar el historial de compras
+  ordenes: any[] = []; 
 
-  // 2. Inyectamos el HttpClient en el constructor
-  constructor(private router: Router, private http: HttpClient,private ordenesService: OrdenesService) {}
+  constructor(private router: Router, private http: HttpClient, private ordenesService: OrdenesService) {}
 
   ngOnInit() {
-  const userStr = localStorage.getItem('usuario'); 
-    if (userStr) {
-      const parsedData = JSON.parse(userStr);
-      
-      // Debug: Esto te va a mostrar en consola exactamente qué tiene el objeto
-      
+    // 2. Buscamos el TOKEN en lugar del "usuario"
+    const token = localStorage.getItem('token') || localStorage.getItem('usuario'); 
 
-      // Si los datos vienen dentro de .user, los extraemos, sino usamos el objeto raíz
-      const info = parsedData.user ? parsedData.user : parsedData;
+    if (token) {
+      try {
+        // Si lo guardaste como JSON (como vimos en tu captura), extraemos el string del token
+        const tokenString = token.includes('access_token') ? JSON.parse(token).access_token : token;
+        
+        // 3. ¡Abrimos el token! 
+        const decodedToken: any = jwtDecode(tokenString);
 
-      // LE ASIGNAMOS EL ID MANUALMENTE PARA ESTAR SEGUROS
-      // (Fijate en la consola si tu ID se llama 'id', 'id_usuario' o '_id')
-      this.usuario = {
-        ...info,
-        id: info.id || parsedData.id // Intentamos sacarlo de cualquier lado
-      };
-      this.cargarHistorial();
+        // El ID suele estar en "sub" (subject) o "id"
+        const userId = decodedToken.sub || decodedToken.id;
+
+        if (userId) {
+          // 4. Vamos a buscar los datos reales al Backend
+          this.http.get(`http://localhost:3000/users/${userId}`).subscribe({
+            next: (datosRealesDelUsuario: any) => {
+              this.usuario = datosRealesDelUsuario; // Llenamos el HTML con la posta
+              this.cargarHistorial();
+            },
+            error: (err) => {
+              console.error('Error al pedir datos al backend:', err);
+              // Si falla, al menos le ponemos el email que venía en el token
+              this.usuario.email = decodedToken.email || '';
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Error leyendo el token:', error);
+      }
+    } else {
+      console.warn('⚠️ No hay token guardado. El usuario no está logueado.');
     }
   }
 
-  // 3. Modificamos la función para que haga la petición real
+  // ... (guardarDatos, cerrarSesion y cargarHistorial quedan IGUAL que antes) ...
   guardarDatos() {
     if (!this.usuario.id) {
-      alert('Error: No se encontró el ID del usuario. Por favor, volvé a iniciar sesión.');
+      alert('Error: No se encontró el ID del usuario.');
       return;
     }
 
@@ -59,14 +76,12 @@ export class Perfil implements OnInit {
       ciudad: this.usuario.ciudad,
       provincia: this.usuario.provincia,
       codigoPostal: this.usuario.codigoPostal
-      
     };
 
     this.http.patch(`http://localhost:3000/users/${this.usuario.id}`, datosParaActualizar)
       .subscribe({
         next: (res) => {
           alert('¡Datos actualizados con éxito! ✅');
-          localStorage.setItem('usuario', JSON.stringify(this.usuario));
         },
         error: (err) => {
           console.error('Error al actualizar:', err);
@@ -75,18 +90,16 @@ export class Perfil implements OnInit {
       });
   }
 
-    
-
   cerrarSesion() {
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');
     this.router.navigate(['/login']);
   }
+
   cargarHistorial() {
     this.ordenesService.getMisCompras().subscribe({
       next: (res) => {
         this.ordenes = res;
-        
       },
       error: (err) => {
         console.error('Error al traer órdenes:', err);

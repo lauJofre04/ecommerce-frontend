@@ -9,6 +9,9 @@ import { Perfil } from './components/perfil/perfil';
 import { AuthGuard } from './guards/auth-guard';
 import { ProductoDetalle } from './components/producto-detalle/producto-detalle';
 import { Checkout } from './components/checkout/checkout';
+import { VerificarEmail } from './components/verificar-email/verificar-email';
+import { ForgotPassword } from './components/forgot-password/forgot-password';
+import { ResetPassword } from './components/reset-password/reset-password';
 
 export const routes: Routes = [
   { path: '', component: ProductList },
@@ -24,5 +27,8 @@ export const routes: Routes = [
   { path: 'perfil', component: Perfil, canActivate: [AuthGuard] }, // <-- ¡Acá ponemos el patovica!
   { path: 'producto/:id', component: ProductoDetalle },
   { path: 'checkout', component: Checkout, canActivate: [AuthGuard] },
+  { path: 'verificar-email', component: VerificarEmail },
+  { path: 'forgot-password', component: ForgotPassword },
+  { path: 'reset-password', component: ResetPassword },
   { path: '**', redirectTo: '' }
 ];

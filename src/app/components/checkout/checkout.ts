@@ -5,6 +5,7 @@ import { CartService } from '../../services/cart';
 import { HttpClient } from '@angular/common/http';
 import { OrdenesService } from '../../services/ordenes'; // Ajustá tu ruta
 import { Router } from '@angular/router';
+import { PaymentsService } from '../../services/payments'; // Ajustá tu ruta
 
 @Component({
   selector: 'app-checkout',
@@ -14,7 +15,7 @@ import { Router } from '@angular/router';
 })
 export class Checkout implements OnInit {
   totalCarrito = 0;
-  costoEnvio = 5000; // Costo fijo de envío de ejemplo
+  costoEnvio = 0; // Costo fijo de envío de ejemplo
 
   // Objeto para guardar los datos del formulario
   datosEnvio = {
@@ -28,7 +29,8 @@ export class Checkout implements OnInit {
     private cartService: CartService,
     private http: HttpClient,
     private ordenesService: OrdenesService, // INYECTAMOS ESTO
-    private router: Router
+    private router: Router,
+    private paymentsService: PaymentsService
   ) {}
 
   ngOnInit() {
@@ -60,7 +62,7 @@ export class Checkout implements OnInit {
   get totalFinal() {
     return this.totalCarrito + this.costoEnvio;
   }
-  irAPagar() {
+  /*irAPagar() {
   const productosCart = this.cartService.getItems();
 
   if (!productosCart || productosCart.length === 0) {
@@ -97,11 +99,11 @@ export class Checkout implements OnInit {
       alert('Hubo un problema guardando la orden. Mirá la consola.');
     }
   });
-}
+}*/
 
 
-  /*
-  Codigo para el botón "Pagar" (descomentá y ajustá según tu implementación) usando MercadoPago
+  
+  //Codigo para el botón "Pagar" (descomentá y ajustá según tu implementación) usando MercadoPago
   irAPagar() {
     const productosCart = this.cartService.getItems();
 
@@ -110,35 +112,50 @@ export class Checkout implements OnInit {
       return;
     }
 
-    // 1. Mapeamos los datos al formato que espera tu Backend
+    // 1. Mapeamos los datos al formato que espera tu Backend para crear la orden
     const detallesOrden = productosCart.map((item: any) => ({
       productoId: item.id,
-      cantidad: item.cantidad || 1 // Asumimos 1 si no manejas cantidades aún en el frontend
+      cantidad: item.cantidad || 1
     }));
 
     const payload = {
       detalles: detallesOrden
     };
 
-    // 2. Llamamos al servicio para crear la orden en la DB
+    // 2. Creamos la orden en la base de datos (nace con estado PENDIENTE)
     this.ordenesService.crearOrden(payload).subscribe({
-      next: (res) => {
+      next: (ordenCreada: any) => {
         
+        // 👇 LA MAGIA DE MERCADO PAGO ARRANCA ACÁ 👇
         
-        // 3. Vaciamos el carrito (Asumiendo que tenés un método clearCart)
-        this.cartService.clearCart(); 
-        
-        // 4. Redirigimos al perfil a la pestaña de historial
-        // (Podés pasar un query param o simplemente mandarlo a /perfil)
-        alert('¡Compra realizada con éxito! Serás redirigido a tu historial.');
-        this.router.navigate(['/perfil']); 
+        // 3. Preparamos el paquete para el backend de pagos
+        // Necesitamos el ID de la orden que recién se guardó en Prisma
+        const datosPago = {
+          ordenId: ordenCreada.id, 
+          items: productosCart // MP necesita los nombres y precios reales
+        };
+
+        // 4. Pedimos el link de pago (init_point)
+        this.paymentsService.createPreference(datosPago).subscribe({
+          next: (resPago: any) => {
+            // Vaciamos el carrito local porque ya se fue a pagar
+            this.cartService.clearCart(); 
+            
+            // 5. ¡Viajamos a la pantalla azul de Mercado Pago!
+            window.location.href = resPago.init_point; 
+          },
+          error: (errPago) => {
+            console.error('Error generando el pago en MP:', errPago);
+            alert('No pudimos conectar con Mercado Pago. Intentá de nuevo.');
+          }
+        });
+
       },
       error: (err) => {
         console.error('Error al crear la orden:', err);
-        // Acá podrías capturar el error de stock que armaste en el backend
         alert(err.error?.message || 'Hubo un problema al procesar tu compra.');
       }
     });
-  }*/
+  }
   
 }

@@ -7,21 +7,16 @@ import { jwtDecode } from 'jwt-decode';
   providedIn: 'root'
 })
 export class AuthService {
-  // ACORDATE: Cambiá esta URL por la exacta que usabas en ThunderClient
-  private apiUrl = 'http://localhost:3000/auth/login'; 
-  private usersUrl = 'http://localhost:3000/users';
+  // 1. Dejamos la URL base apuntando solo a la "puerta" de Auth
+  private baseUrl = 'http://localhost:3000/auth'; 
 
   constructor(private http: HttpClient) {}
 
   login(credentials: any) {
-    return this.http.post<any>(this.apiUrl, credentials).pipe(
+    // 2. Le agregamos /login acá
+    return this.http.post<any>(`${this.baseUrl}/login`, credentials).pipe(
       tap(response => {
-        // CHISMOSO: Imprime en consola lo que mandó el backend
-         
-
-        // Probablemente tu backend use "access_token" en lugar de "token"
         const tokenReal = response.access_token || response.token; 
-        
         if (tokenReal) {
           localStorage.setItem('token', tokenReal); 
         }
@@ -29,32 +24,37 @@ export class AuthService {
     );
   }
 
-  // Método para saber si el usuario está logueado
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
   }
 
-  // Método para obtener el rol actual
   getRole(): string | null {
     const token = localStorage.getItem('token');
     if (token) {
       try {
         const decoded: any = jwtDecode(token);
-        
-        // CHISMOSO: Para ver qué hay adentro del token
-         
-
-        // Buscamos "rol" (como está en Prisma) o "role" por las dudas
         return decoded.rol || decoded.role || null; 
-        
       } catch (e) {
         return null;
       }
     }
     return null;
   }
+
   register(userData: any) {
-    // Mandamos el nombre, email y password al backend
-    return this.http.post<any>(this.usersUrl, userData);
+    // 3. Le agregamos /register acá
+    return this.http.post<any>(`${this.baseUrl}/register`, userData);
+  }
+
+  verificarEmail(token: string) {
+    // 4. Ahora sí la ruta queda perfecta: http://localhost:3000/auth/verificar-email
+    return this.http.post(`${this.baseUrl}/verificar-email`, { token: token });
+  }
+  forgotPassword(email: string) {
+    return this.http.post(`${this.baseUrl}/forgot-password`, { email });
+  }
+
+  resetPassword(token: string, nuevaPassword: string) {
+    return this.http.post(`${this.baseUrl}/reset-password`, { token, nuevaPassword });
   }
 }

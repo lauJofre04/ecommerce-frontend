@@ -4,25 +4,58 @@
   <form (ngSubmit)="onSubmit()">
     <div class="mb-4">
       <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
-      <input type="email" [(ngModel)]="credenciales.email" name="email" 
+      <input type="email" [(ngModel)]="credenciales.email" name="email" autocomplete="email" placeholder="Ingresá tu email" required
              class="w-full px-3 py-2 border rounded-lg bg-gray-50">
     </div>
 
     <div class="mb-6">
       <label class="block text-gray-700 text-sm font-bold mb-2">Contraseña</label>
-      <input type="password" [(ngModel)]="credenciales.password" name="password" 
-             class="w-full px-3 py-2 border rounded-lg bg-gray-50">
+      <div class="relative w-full">
+        <input 
+          [type]="verPassword ? 'text' : 'password'" 
+          [(ngModel)]="credenciales.password" 
+          name="password" 
+          placeholder="Ingresá tu contraseña"
+          class="w-full px-3 py-2 border rounded-lg bg-gray-50 pr-10"
+        >
+        
+        <button 
+          type="button" 
+          (click)="verPassword = !verPassword"
+          class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500 hover:text-gray-700 focus:outline-none"
+        >
+          <svg *ngIf="verPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+          </svg>
+          
+          <svg *ngIf="!verPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+            <path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7.029 7.029 0 0 0 2.79-.588zM5.21 3.088A7.028 7.028 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474L5.21 3.089z"/>
+            <path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829l-2.83-2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12-.708.708z"/>
+          </svg>
+        </button>
+      </div>
     </div>
-
+    <div class="mt-6 mb-4 text-center">
+      <p class="text-sm text-gray-600">¿Olvidaste tu contraseña? 
+        <a routerLink="/forgot-password" class="text-blue-600 hover:text-blue-800 font-bold hover:underline transition">
+          Recuperala acá
+        </a>
+      </p>
+    </div>  
     <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">
-      Entrar
+        Entrar
     </button>
-    <div class="mt-6 text-center">
+    <div *ngIf="mensajeError" class="alert alert-danger  mt-3 text-center" role="alert">
+      {{ mensajeError }}
+    </div>
+    
+    <div class="mt-4 text-center">
       <p class="text-sm text-gray-600">¿No tenés cuenta? 
         <a routerLink="/registro" class="text-blue-600 hover:text-blue-800 font-bold hover:underline transition">
           Registrate acá
         </a>
       </p>
-    </div>
+    </div>   
   </form>
 </div>
