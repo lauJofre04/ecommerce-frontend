@@ -27,10 +27,6 @@ Una aplicación Single Page Application (SPA) para un e-commerce de tecnología,
 
 
 
-
-<img width="1347" height="679" alt="Image" src="https://github.com/user-attachments/assets/7783cc5a-bd4d-42e7-80c1-1a82514aa48a" />
-
-<img width="1349" height="680" alt="Image" src="https://github.com/user-attachments/assets/a9f66475-f0cb-4507-8336-0b3aae6b0272" />
 ## 🚀 Instalación y Uso
 
 1. Clonar el repositorio:
