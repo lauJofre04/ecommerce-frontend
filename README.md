@@ -23,7 +23,7 @@ Una aplicación Single Page Application (SPA) para un e-commerce de tecnología,
 
 | Vista Principal | Panel de Administrador | Carrito de Compras |
 | :---: | :---: | :---: |
-| ![Inicio](https://github.com/user-attachments/assets/f82494bd-5fc9-4885-a632-1101184de3bc) | ![Admin]([https://github.com/user-attachments/assets/e4debdd4-85a4-47ae-bff3-362776a6b9db](https://github.com/user-attachments/assets/7783cc5a-bd4d-42e7-80c1-1a82514aa48a))| ![Carrito]([link-a-tu-imagen](https://github.com/user-attachments/assets/a9f66475-f0cb-4507-8336-0b3aae6b0272)) |
+| ![Inicio](https://github.com/user-attachments/assets/f82494bd-5fc9-4885-a632-1101184de3bc) | ![Admin]([https://github.com/user-attachments/assets/e4debdd4-85a4-47ae-bff3-362776a6b9db])| ![Carrito]((https://github.com/user-attachments/assets/a9f66475-f0cb-4507-8336-0b3aae6b0272)) |
 
 
 
