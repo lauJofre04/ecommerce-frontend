@@ -1,59 +1,50 @@
-# FrontEnd
+# ⚙️ Tech Store - REST API
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.1.
+![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 
-## Development server
+Una API RESTful robusta y escalable construida con NestJS y Prisma ORM para gestionar el backend de un e-commerce de tecnología. 
 
-To start a local development server, run:
+## ✨ Funcionalidades (Endpoints)
 
-```bash
-ng serve
-```
+- **👤 Usuarios & Auth:** Autenticación con JWT (JSON Web Tokens) y encriptación de contraseñas.
+- **📦 Gestión de Productos:** CRUD completo de productos y categorías. Subida y manejo de imágenes.
+- **🛍️ Órdenes y Ventas:**
+  - Creación de órdenes de compra vinculadas a los usuarios.
+  - **Gestión inteligente de stock:** El stock se descuenta automáticamente al aprobar una orden y se reintegra si la orden es cancelada por un administrador.
+- **🔒 Guards & Roles:** Rutas protegidas para usuarios autenticados y endpoints exclusivos para el rol ADMIN.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 🗄️ Estructura de la Base de Datos
 
-## Code scaffolding
+El proyecto utiliza PostgreSQL. Los modelos principales incluyen:
+- `Usuario` (id, nombre, email, password, rol, etc.)
+- `Producto` (id, nombre, precio, stockDisponible, categoriaId)
+- `Categoria` (id, nombre)
+- `Orden` (id, total, estado, fechaOrden, usuarioId)
+- `DetalleOrden` (id, ordenId, productoId, cantidad, precio)
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🚀 Instalación y Configuración Local
 
-```bash
-ng generate component component-name
-```
+1. Clonar el repositorio:
+git clone https://github.com/lauJofre04/ecommerce-proyecto-backend.git
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+2. Instalar las dependencias:
+npm install
 
-```bash
-ng generate --help
-```
+3. Configurar variables de entorno:
+Renombrar el archivo .env.example a .env (asegurate de tener ambos) y configurar la variable DATABASE_URL con tu conexión a PostgreSQL y tu JWT_SECRET.
 
-## Building
+4. Sincronizar la base de datos con Prisma:
+npx prisma db push
 
-To build the project run:
+5. Iniciar la aplicación:
+npm run start:dev
 
-```bash
-ng build
-```
+La API estará corriendo en http://localhost:3000/
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 🚧 Notas de Desarrollo
+- *Integración de Pagos:* El flujo actual simula el guardado directo de la orden. La integración de la pasarela de Mercado Pago está estructurada a la espera de credenciales de producción.
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 🧑‍💻 Autor
+**Lautaro Jofré** - *Full-Stack Developer* - [Pega tu LinkedIn aquí]
