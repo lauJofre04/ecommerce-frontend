@@ -57,7 +57,7 @@ export class ProductoDetalle implements OnInit {
     
     // Si es solo el nombre del archivo, le pegamos la URL de tu backend
     // ATENCIÓN: Cambiá '/uploads/' por el nombre de la carpeta donde tu backend guarda las fotos
-    return `http://localhost:3000/uploads/${imagen}`; 
+    return `https://ecommerce-proyecto-backend.onrender.com/uploads/${imagen}`; 
   }
 
   agregarAlCarrito() {

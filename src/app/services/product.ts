@@ -7,7 +7,7 @@ import { Product } from '../interfaces/product.interface';
   providedIn: 'root'
 })
 export class ProductService {
-  private apiUrl = 'http://localhost:3000/products'; // Tu backend de Nest
+  private apiUrl = 'https://ecommerce-proyecto-backend.onrender.com/products'; // Tu backend de Nest
   
   constructor(private http: HttpClient) { }
 
@@ -33,13 +33,13 @@ export class ProductService {
   }
   // En product.service.ts
   getCategories(): Observable<any[]> {
-    return this.http.get<any[]>('http://localhost:3000/categories');
+    return this.http.get<any[]>('https://ecommerce-proyecto-backend.onrender.com/categories');
   }
 
   createCategory(nombre: string): Observable<any> {
-    return this.http.post('http://localhost:3000/categories', { nombre });
+    return this.http.post('https://ecommerce-proyecto-backend.onrender.com/categories', { nombre });
   }
   deleteCategory(id: number): Observable<any> {
-    return this.http.delete(`http://localhost:3000/categories/${id}`);
+    return this.http.delete(`https://ecommerce-proyecto-backend.onrender.com/categories/${id}`);
   }
 }

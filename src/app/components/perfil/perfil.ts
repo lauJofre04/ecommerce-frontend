@@ -42,7 +42,7 @@ export class Perfil implements OnInit {
 
         if (userId) {
           // 4. Vamos a buscar los datos reales al Backend
-          this.http.get(`http://localhost:3000/users/${userId}`).subscribe({
+          this.http.get(`https://ecommerce-proyecto-backend.onrender.com/users/${userId}`).subscribe({
             next: (datosRealesDelUsuario: any) => {
               this.usuario = datosRealesDelUsuario; // Llenamos el HTML con la posta
               this.cargarHistorial();
@@ -78,7 +78,7 @@ export class Perfil implements OnInit {
       codigoPostal: this.usuario.codigoPostal
     };
 
-    this.http.patch(`http://localhost:3000/users/${this.usuario.id}`, datosParaActualizar)
+    this.http.patch(`https://ecommerce-proyecto-backend.onrender.com/users/${this.usuario.id}`, datosParaActualizar)
       .subscribe({
         next: (res) => {
           alert('¡Datos actualizados con éxito! ✅');

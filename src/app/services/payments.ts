@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class PaymentsService {
   // Ajustá esta URL a la que use tu backend de NestJS
-  private apiUrl = 'http://localhost:3000/payments'; 
+  private apiUrl = 'https://ecommerce-proyecto-backend.onrender.com/payments'; 
 
   constructor(private http: HttpClient) { }
 

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class OrdenesService {
-  private apiUrl = 'http://localhost:3000/ordenes'; // Ajustá según tu puerto
+  private apiUrl = 'https://ecommerce-proyecto-backend.onrender.com/ordenes'; // Ajustá según tu puerto
 
   constructor(private http: HttpClient) { }
 

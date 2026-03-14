@@ -8,7 +8,7 @@ import { jwtDecode } from 'jwt-decode';
 })
 export class AuthService {
   // 1. Dejamos la URL base apuntando solo a la "puerta" de Auth
-  private baseUrl = 'http://localhost:3000/auth'; 
+  private baseUrl = 'https://ecommerce-proyecto-backend.onrender.com/auth'; 
 
   constructor(private http: HttpClient) {}
 
@@ -47,7 +47,7 @@ export class AuthService {
   }
 
   verificarEmail(token: string) {
-    // 4. Ahora sí la ruta queda perfecta: http://localhost:3000/auth/verificar-email
+    // 4. Ahora sí la ruta queda perfecta: https://ecommerce-proyecto-backend.onrender.com/auth/verificar-email
     return this.http.post(`${this.baseUrl}/verificar-email`, { token: token });
   }
   forgotPassword(email: string) {

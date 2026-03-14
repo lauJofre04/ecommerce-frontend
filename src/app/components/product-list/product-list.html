@@ -37,7 +37,7 @@
     <div *ngFor="let p of productosFiltrados" [routerLink]="['/producto', p.id]" class="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100 flex flex-col transition-transform hover:scale-[1.02]">
       
       <div class="h-48 bg-gray-200">
-        <img [src]="p.imagenUrl ? 'http://localhost:3000/uploads/' + p.imagenUrl : 'https://placehold.co/600x400?text=Sin+Imagen'" 
+        <img [src]="p.imagenUrl ? 'https://ecommerce-proyecto-backend.onrender.com/uploads/' + p.imagenUrl : 'https://placehold.co/600x400?text=Sin+Imagen'" 
              class="w-full h-full object-cover">
       </div>
 
