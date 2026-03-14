@@ -50,7 +50,7 @@ export class ProductList implements OnInit {
     this.productService.getCategories().subscribe({
       next: (res) => {
         this.categorias = res;
-        console.log('Categorías cargadas en el frontend:', this.categorias); // <-- Agregá esto para revisar la consola
+         // <-- Agregá esto para revisar la consola
       },
       error: (err) => console.error('Error cargando categorías', err)
     });
@@ -58,7 +58,7 @@ export class ProductList implements OnInit {
 
     // 2. Cuando el usuario hace clic en un botón de categoría
   seleccionarCategoria(id: number | null) {
-    console.log('👉 Botón tocado. ID de Categoría:', id);
+    
     this.categoriaSeleccionada = id;
     this.aplicarFiltros();
   }
@@ -85,6 +85,6 @@ export class ProductList implements OnInit {
     }
 
     this.productosFiltrados = resultado;
-    console.log('✅ Productos filtrados resultantes:', this.productosFiltrados.length);
+    
   }
 }

@@ -30,7 +30,7 @@ export class Perfil implements OnInit {
       const parsedData = JSON.parse(userStr);
       
       // Debug: Esto te va a mostrar en consola exactamente qué tiene el objeto
-      console.log('Datos del usuario cargados:', parsedData);
+      
 
       // Si los datos vienen dentro de .user, los extraemos, sino usamos el objeto raíz
       const info = parsedData.user ? parsedData.user : parsedData;
@@ -86,7 +86,7 @@ export class Perfil implements OnInit {
     this.ordenesService.getMisCompras().subscribe({
       next: (res) => {
         this.ordenes = res;
-        console.log('Historial cargado:', res);
+        
       },
       error: (err) => {
         console.error('Error al traer órdenes:', err);

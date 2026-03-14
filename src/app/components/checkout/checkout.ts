@@ -52,7 +52,7 @@ export class Checkout implements OnInit {
           provincia: user.provincia || '',
           codigoPostal: user.codigoPostal || ''
         };
-        console.log('Formulario autocompletado con éxito ✅');
+        
       }
     }
   }
@@ -79,11 +79,11 @@ export class Checkout implements OnInit {
   };
 
   // 2. Simulamos el pago exitoso llamando directo a tu servicio de Órdenes
-  console.log('Creando orden de prueba bypass...', payload);
+  
   
   this.ordenesService.crearOrden(payload).subscribe({
     next: (res) => {
-      console.log('¡Orden guardada en Prisma!', res);
+      
       
       // 3. Vaciamos el carrito local
       this.cartService.clearCart(); 
@@ -123,7 +123,7 @@ export class Checkout implements OnInit {
     // 2. Llamamos al servicio para crear la orden en la DB
     this.ordenesService.crearOrden(payload).subscribe({
       next: (res) => {
-        console.log('¡Orden creada con éxito!', res);
+        
         
         // 3. Vaciamos el carrito (Asumiendo que tenés un método clearCart)
         this.cartService.clearCart(); 

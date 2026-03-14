@@ -17,7 +17,7 @@ export class AuthService {
     return this.http.post<any>(this.apiUrl, credentials).pipe(
       tap(response => {
         // CHISMOSO: Imprime en consola lo que mandó el backend
-        console.log('Respuesta del servidor:', response); 
+         
 
         // Probablemente tu backend use "access_token" en lugar de "token"
         const tokenReal = response.access_token || response.token; 
@@ -42,7 +42,7 @@ export class AuthService {
         const decoded: any = jwtDecode(token);
         
         // CHISMOSO: Para ver qué hay adentro del token
-        console.log('Token decodificado:', decoded); 
+         
 
         // Buscamos "rol" (como está en Prisma) o "role" por las dudas
         return decoded.rol || decoded.role || null; 
