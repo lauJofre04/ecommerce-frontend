@@ -36,7 +36,7 @@ npm install
 3. Ejecutar el servidor de desarrollo:
 ng serve
 
-4. Abrir el navegador en http://localhost:4200/
+4. Abrir el navegador en https://ecommerce-frontend-proyecto.vercel.app/
 
 ## 🧑‍💻 Autor
 **Lautaro Jofré** - *Full-Stack Developer* - [www.linkedin.com/in/lautaro-jofre]
