@@ -19,6 +19,7 @@ export class ProductList implements OnInit {
   terminoBusqueda: string = '';
   categorias: any[] = [];
   categoriaSeleccionada: number | null = null;
+  timestamp: number = Date.now();
   constructor(
     private productService: ProductService,
     private cartService: CartService,
@@ -36,10 +37,10 @@ export class ProductList implements OnInit {
     this.cargarCategorias();
   }
   cargarProductos() {
+    this.timestamp = Date.now(); // 2. ACTUALIZAMOS EL TIEMPO AL CARGAR
     this.productService.getProducts().subscribe({
       next: (res) => {
         this.productos = res;
-        // Forzamos que la lista filtrada tenga los datos inmediatamente
         this.productosFiltrados = [...res]; 
       },
       error: (err) => console.error('Error al cargar:', err)
@@ -91,13 +92,12 @@ export class ProductList implements OnInit {
     
   }
   getProductImageUrl(imageName: string): string {
-    // Si el backend no devuelve nombre de imagen, mostramos la local
     if (!imageName || imageName === '') {
-      // Usamos la barra adelante para asegurarnos en Vercel
-      return '/assets/no-image.jpg'; 
+      // Le sacamos la barra inicial por las dudas con Vercel
+      return 'assets/no-image.jpg'; 
     }
 
-    // Si hay imagen, armamos la URL de Render con el truco de la caché (?t=...)
-    return `https://ecommerce-proyecto-backend.onrender.com/uploads/${imageName}?t=${Date.now()}`;
+    // 3. USAMOS THIS.TIMESTAMP EN LUGAR DE DATE.NOW() DIRECTO
+    return `https://ecommerce-proyecto-backend.onrender.com/uploads/${imageName}?t=${this.timestamp}`;
   }
 }
