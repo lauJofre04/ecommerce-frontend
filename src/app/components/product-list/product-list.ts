@@ -4,6 +4,7 @@ import { ProductService } from '../../services/product';
 import { CartService } from '../../services/cart';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { environment } from '../../../environments/environments'; // (Ojo, los ../ dependen de dónde esté tu archivo)
 
 
 @Component({
@@ -74,6 +75,8 @@ export class ProductList implements OnInit {
         return idProductoCat === Number(this.categoriaSeleccionada);
       });
     }
+    // En tu componente de Angular
+    
 
     // 2. Filtro por Búsqueda (Texto)
     const termino = this.terminoBusqueda?.toLowerCase().trim();
@@ -86,5 +89,9 @@ export class ProductList implements OnInit {
 
     this.productosFiltrados = resultado;
     
+  }
+  getProductImageUrl(imageName: string): string {
+    if (!imageName) return 'assets/no-image.jpg'; // Por si algún producto no tiene imagen
+    return `${environment.apiUrl}/uploads/${imageName}?t=${Date.now()}`;
   }
 }
