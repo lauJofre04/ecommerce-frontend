@@ -17,13 +17,6 @@ Una aplicación Single Page Application (SPA) para un e-commerce de tecnología,
 - **💳 Checkout:** Simulación de pasarela de pago (preparado para integración con Mercado Pago).
 - **📱 Diseño Responsivo:** Interfaz adaptada a dispositivos móviles y escritorio usando Tailwind CSS.
 
-## 📸 Capturas de Pantalla
-
-*(Agregá acá capturas de tu app arrastrando las imágenes directo a GitHub)*
-
-| Vista Principal | Panel de Administrador | Carrito de Compras |
-| :---: | :---: | :---: |
-| ![Inicio](link-a-tu-imagen) | ![Admin](link-a-tu-imagen) | ![Carrito](link-a-tu-imagen) |
 
 ## 🚀 Instalación y Uso
 
