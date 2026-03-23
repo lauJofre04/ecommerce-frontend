@@ -91,7 +91,13 @@ export class ProductList implements OnInit {
     
   }
   getProductImageUrl(imageName: string): string {
-    if (!imageName) return 'assets/no-image.jpg'; // Por si algún producto no tiene imagen
-    return `${environment.apiUrl}/uploads/${imageName}?t=${Date.now()}`;
+    // Si el backend no devuelve nombre de imagen, mostramos la local
+    if (!imageName || imageName === '') {
+      // Usamos la barra adelante para asegurarnos en Vercel
+      return '/assets/no-image.jpg'; 
+    }
+
+    // Si hay imagen, armamos la URL de Render con el truco de la caché (?t=...)
+    return `https://ecommerce-proyecto-backend.onrender.com/uploads/${imageName}?t=${Date.now()}`;
   }
 }
