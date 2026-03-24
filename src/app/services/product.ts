@@ -26,8 +26,11 @@ export class ProductService {
     return this.http.post(this.apiUrl, formData,{headers});
   }
   updateProduct(id: number, productData: FormData): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/${id}`, productData); 
-  }
+  const token= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxhdUBlamVtcGxvLmNvbSIsInN1YiI6Mywicm9sIjoiQURNSU4iLCJpYXQiOjE3NzMxMDAyMzEsImV4cCI6MTc3MzE4NjYzMX0.wQebOA-3nqrB9waz0IW33ADzNgw1VO5i43eD4K2D4B8';
+  const headers = { 'Authorization': `Bearer ${token}` };
+  
+  return this.http.patch<any>(`${this.apiUrl}/${id}`, productData, {headers});
+}
   deleteProduct(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
