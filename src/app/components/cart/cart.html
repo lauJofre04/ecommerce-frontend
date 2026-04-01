@@ -20,7 +20,7 @@
          class="flex items-center justify-between bg-white p-4 rounded-xl shadow-sm border border-gray-100">
       <div class="flex items-center gap-4">
         <div class="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden">
-             <img [src]="item.imagenUrl ? 'https://ecommerce-proyecto-backend.onrender.com/uploads/' + item.imagenUrl : 'https://placehold.co/100'" class="object-cover w-full h-full">
+             <img [src]="getImageUrl(item.imagenUrl)" class="object-cover w-full h-full">
         </div>
         <div>
           <h3 class="font-bold text-gray-800">{{ item.nombre }}</h3>

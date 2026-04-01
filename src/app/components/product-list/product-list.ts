@@ -97,6 +97,11 @@ export class ProductList implements OnInit {
       return 'assets/no-image.jpg'; 
     }
 
+    // Si ya es un link completo (de Cloudinary u otro servidor), lo devolvemos tal cual
+    if (imageName.startsWith('http')) {
+      return imageName;
+    }
+
     // 3. USAMOS THIS.TIMESTAMP EN LUGAR DE DATE.NOW() DIRECTO
     return `https://ecommerce-proyecto-backend.onrender.com/uploads/${imageName}?t=${this.timestamp}`;
   }

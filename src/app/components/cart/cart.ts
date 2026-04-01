@@ -37,5 +37,18 @@ vaciarCarrito() {
     this.cartService.clearCart();
   }
 }
+
+getImageUrl(imageName: string): string {
+  if (!imageName || imageName === '') {
+    return 'https://placehold.co/100';
+  }
+
+  // Si ya es un link completo (de Cloudinary u otro servidor), lo devolvemos tal cual
+  if (imageName.startsWith('http')) {
+    return imageName;
+  }
+
+  return `https://ecommerce-proyecto-backend.onrender.com/uploads/${imageName}`;
+}
   
 }
