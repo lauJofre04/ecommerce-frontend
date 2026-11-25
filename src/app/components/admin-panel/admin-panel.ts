@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { ToastService } from '../../services/toast';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../services/product';
@@ -12,6 +13,7 @@ import { LucideAngularModule, Package, ClipboardList } from 'lucide-angular';
   templateUrl: './admin-panel.html' 
 })
 export class AdminPanelComponent implements OnInit, OnDestroy {
+  private toast = inject(ToastService);
   readonly iconos = { Package, ClipboardList };
   newProduct = { nombre: '', descripcion: '', precio: 0, stock: 0, categoriaId:0};
   selectedFile: File | null = null;
@@ -72,7 +74,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (!this.productoEnEdicionId && !this.selectedFile) {
-      return alert('Por favor, selecciona una imagen');
+      return this.toast.info('Por favor, selecciona una imagen');
     }
     
     this.isLoading = true;
@@ -93,7 +95,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
           this.isLoading = false;
           this.cargarProductos();
           this.cancelarEdicion();
-          alert('¡Producto actualizado con éxito!');
+          this.toast.exito('¡Producto actualizado con éxito!');
         },
         error: (err) => {
           this.isLoading = false;
@@ -106,7 +108,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
           this.isLoading = false;
           this.cargarProductos(); 
           this.cancelarEdicion(); 
-          alert('¡Producto creado con éxito!');
+          this.toast.exito('¡Producto creado con éxito!');
         },
         error: (err) => {
           this.isLoading = false;
@@ -120,7 +122,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     if(confirm('¿Estás seguro de que querés borrar este producto?')) {
       this.productService.deleteProduct(id).subscribe({
         next: () => {
-          alert('Producto eliminado');
+          this.toast.exito('Producto eliminado');
           this.cargarProductos(); 
         },
         error: (err) => console.error('Error al borrar', err)
@@ -140,9 +142,9 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       next: (res) => {
         this.cargarCategorias(); 
         this.nuevaCategoriaNombre = ''; 
-        alert('Categoría creada con éxito');
+        this.toast.exito('Categoría creada con éxito');
       },
-      error: (err) => alert('Error al crear categoría. Capaz ya existe.')
+      error: (err) => this.toast.error('Error al crear categoría. Capaz ya existe.')
     });
   }
 
@@ -175,12 +177,12 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     if (confirm(`¿Estás seguro de cambiar el estado del pedido #${ordenId} a ${nuevoEstado}?`)) {
       this.ordenesService.cambiarEstado(ordenId, nuevoEstado).subscribe({
         next: () => {
-          alert(`¡Pedido #${ordenId} actualizado a ${nuevoEstado}! El stock fue modificado.`);
+          this.toast.exito(`¡Pedido #${ordenId} actualizado a ${nuevoEstado}! El stock fue modificado.`);
           this.cargarOrdenes(); 
         },
         error: (err) => {
           console.error('Error actualizando estado:', err);
-          alert('Hubo un error al intentar cambiar el estado.');
+          this.toast.error('Hubo un error al intentar cambiar el estado.');
         }
       });
     }

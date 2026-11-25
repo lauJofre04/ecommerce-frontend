@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { ToastService } from '../../services/toast';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -11,6 +12,7 @@ import { AuthService } from '../../services/auth';
   templateUrl: './register.html'
 })
 export class RegisterComponent {
+  private toast = inject(ToastService);
   nuevoUsuario = {
     nombre: '',
     apellido:'',
@@ -26,12 +28,12 @@ export class RegisterComponent {
   onSubmit() {
     this.authService.register(this.nuevoUsuario).subscribe({
       next: (res) => {
-        alert('¡Cuenta creada con éxito! Ya podés iniciar sesión.');
+        this.toast.exito('¡Cuenta creada con éxito! Ya podés iniciar sesión.');
         // Si sale bien, lo mandamos directo a la pantalla de Login
         this.router.navigate(['/login']);
       },
       error: (err) => {
-        alert('Hubo un error al registrarte. Tal vez el email ya existe.');
+        this.toast.error('Hubo un error al registrarte. Tal vez el email ya existe.');
         console.error(err);
       }
     });
