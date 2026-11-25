@@ -1,6 +1,6 @@
 <div class="max-w-4xl mx-auto p-8">
   <div class="flex justify-between items-center mb-8">
-    <h2 class="text-3xl font-bold text-gray-800">Tu Carrito 🛒</h2>
+    <h2 class="text-3xl font-bold text-gray-800"><lucide-icon [img]="iconos.ShoppingCart" [size]="28" class="inline-block align-text-bottom mr-2"></lucide-icon>Tu Carrito</h2>
     <button *ngIf="items.length > 0" 
             (click)="vaciarCarrito()" 
             class="text-sm text-red-500 hover:underline font-medium">

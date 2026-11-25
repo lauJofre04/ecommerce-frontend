@@ -30,7 +30,7 @@ export class ProductList implements OnInit {
   
   agregarAlCarrito(producto: any) {
     this.cartService.addToCart(producto);
-    alert(`${producto.nombre} añadido al carrito 🛒`);
+    alert(`${producto.nombre} añadido al carrito`);
   }
   ngOnInit() {
     this.cargarProductos();

@@ -81,7 +81,7 @@ export class Perfil implements OnInit {
     this.http.patch(`https://ecommerce-proyecto-backend.onrender.com/users/${this.usuario.id}`, datosParaActualizar)
       .subscribe({
         next: (res) => {
-          alert('¡Datos actualizados con éxito! ✅');
+          alert('¡Datos actualizados con éxito!');
         },
         error: (err) => {
           console.error('Error al actualizar:', err);

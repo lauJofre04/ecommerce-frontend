@@ -3,14 +3,16 @@ import { CartService } from '../../services/cart';
 import { CommonModule } from '@angular/common'; // Asegúrate de esto
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth';
+import { LucideAngularModule, ShoppingCart, Settings, User, LogOut } from 'lucide-angular';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, LucideAngularModule],
   templateUrl: './navbar.html'
 })
 export class Navbar implements OnInit {
+  readonly iconos = { ShoppingCart, Settings, User, LogOut };
   cartCount = 0;
   isMenuOpen= false;
   constructor(
