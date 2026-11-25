@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Product } from '../interfaces/product.interface';
+import { Categoria, Producto } from '../interfaces/models';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +11,11 @@ export class ProductService {
   
   constructor(private http: HttpClient) { }
 
-  getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.apiUrl);
+  getProducts(): Observable<Producto[]> {
+    return this.http.get<Producto[]>(this.apiUrl);
   }
-  getProductById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  getProductById(id: number): Observable<Producto> {
+    return this.http.get<Producto>(`${this.apiUrl}/${id}`);
   }
   // Agrega esto dentro de la clase ProductService
   createProduct(formData: FormData): Observable<any> {
@@ -30,8 +30,8 @@ export class ProductService {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
   // En product.service.ts
-  getCategories(): Observable<any[]> {
-    return this.http.get<any[]>('https://ecommerce-proyecto-backend.onrender.com/categories');
+  getCategories(): Observable<Categoria[]> {
+    return this.http.get<Categoria[]>('https://ecommerce-proyecto-backend.onrender.com/categories');
   }
 
   createCategory(nombre: string): Observable<any> {

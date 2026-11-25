@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { ItemCarrito } from '../interfaces/models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  private cartItems: any[] = [];
-  private _cart = new BehaviorSubject<any[]>([]);
+  private cartItems: ItemCarrito[] = [];
+  private _cart = new BehaviorSubject<ItemCarrito[]>([]);
   
   // Observable para que el Navbar y otros componentes "escuchen" cambios
   cart$ = this._cart.asObservable();
@@ -15,7 +16,7 @@ export class CartService {
     this.loadCart(); // Cargamos apenas arranca la app
   }
 
-  addToCart(product: any) {
+  addToCart(product: ItemCarrito) {
     this.cartItems.push(product);
     this._cart.next(this.cartItems);
     this.saveToLocalStorage();
@@ -48,6 +49,9 @@ export class CartService {
     this.saveToLocalStorage();
   }
   clearCart() {
+    // Antes solo se vaciaba el observable y cartItems conservaba los productos viejos:
+    // el siguiente addToCart los volvía a emitir.
+    this.cartItems = [];
     this._cart.next([]); // Vaciamos el observable
     localStorage.removeItem('cart'); // Limpiamos la memoria del navegador
   }
