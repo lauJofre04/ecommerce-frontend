@@ -8,16 +8,16 @@
     </button>
   </div>
 
-  <div *ngIf="items.length === 0" class="bg-blue-50 p-8 rounded-2xl text-center">
+  <div *ngIf="items.length === 0" class="anim-entrada bg-white border border-dashed border-slate-300 p-10 rounded-2xl text-center">
     <p class="text-blue-600 font-medium mb-4">El carrito está vacío.</p>
-    <button routerLink="/" class="bg-blue-600 text-white px-6 py-2 rounded-lg font-bold">
+    <button routerLink="/" class="btn-glow bg-blue-600 text-white px-6 py-2 rounded-lg font-bold">
       Ir a ver productos
     </button>
   </div>
 
   <div *ngIf="items.length > 0" class="space-y-4">
-    <div *ngFor="let item of items; let i = index" 
-         class="flex items-center justify-between bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+    <div *ngFor="let item of items; let i = index" [style.animation-delay.ms]="i * 60"
+         class="anim-entrada flex items-center justify-between bg-white p-4 rounded-xl shadow-sm border border-slate-200 transition-shadow hover:shadow-md">
       <div class="flex items-center gap-4">
         <div class="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden">
              <img [src]="getImageUrl(item.imagenUrl)" class="object-cover w-full h-full">
@@ -38,12 +38,12 @@
       </div>
     </div>
 
-    <div class="mt-8 bg-gray-900 text-white p-6 rounded-2xl flex justify-between items-center">
-      <div>
-        <p class="text-gray-400 text-sm">Total a pagar</p>
+    <div class="hero anim-entrada mt-8 p-6 flex justify-between items-center">
+      <div class="relative z-10">
+        <p class="text-slate-300 text-sm">Total a pagar</p>
         <h3 class="text-3xl font-bold">{{ total | currency }}</h3>
       </div>
-      <button routerLink="/checkout" class="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-xl font-bold transition text-white">
+      <button routerLink="/checkout" class="btn-glow relative z-10 bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-xl font-bold text-white">
         Finalizar Compra
       </button>
     </div>
