@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { ToastService } from '../../services/toast';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../services/product';
 import { CartService } from '../../services/cart';
@@ -14,6 +15,7 @@ import { environment } from '../../../environments/environments'; // (Ojo, los .
   templateUrl: './product-list.html'
 })
 export class ProductList implements OnInit {
+  private toast = inject(ToastService);
   productos: any[] = [];
   productosFiltrados: any[] = [];
   terminoBusqueda: string = '';
@@ -30,7 +32,7 @@ export class ProductList implements OnInit {
   
   agregarAlCarrito(producto: any) {
     this.cartService.addToCart(producto);
-    alert(`${producto.nombre} añadido al carrito`);
+    this.toast.exito(`${producto.nombre} añadido al carrito`);
   }
   ngOnInit() {
     this.cargarProductos();

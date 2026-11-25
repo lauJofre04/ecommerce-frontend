@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { ToastService } from '../../services/toast';
 import { CommonModule} from '@angular/common';
 import { FormsModule } from '@angular/forms'; // <-- Importante para usar ngModel en el formulario
 import { CartService } from '../../services/cart';
@@ -14,6 +15,7 @@ import { PaymentsService } from '../../services/payments'; // Ajustá tu ruta
   templateUrl: './checkout.html'
 })
 export class Checkout implements OnInit {
+  private toast = inject(ToastService);
   totalCarrito = 0;
   costoEnvio = 0; // Costo fijo de envío de ejemplo
 
@@ -66,7 +68,7 @@ export class Checkout implements OnInit {
   const productosCart = this.cartService.getItems();
 
   if (!productosCart || productosCart.length === 0) {
-    alert('Tu carrito está vacío');
+    this.toast.info('Tu carrito está vacío');
     return;
   }
 
@@ -91,12 +93,12 @@ export class Checkout implements OnInit {
       this.cartService.clearCart(); 
       
       // 4. Te mandamos a ver tu nueva orden
-      alert('¡Simulación de compra exitosa! Mirá tu historial.');
+      this.toast.exito('¡Simulación de compra exitosa! Mirá tu historial.');
       this.router.navigate(['/perfil']); 
     },
     error: (err) => {
       console.error('Error al crear la orden:', err);
-      alert('Hubo un problema guardando la orden. Mirá la consola.');
+      this.toast.error('Hubo un problema guardando la orden. Intentá de nuevo.');
     }
   });
 }*/
@@ -108,7 +110,7 @@ export class Checkout implements OnInit {
     const productosCart = this.cartService.getItems();
 
     if (!productosCart || productosCart.length === 0) {
-      alert('Tu carrito está vacío');
+      this.toast.info('Tu carrito está vacío');
       return;
     }
 
@@ -146,14 +148,14 @@ export class Checkout implements OnInit {
           },
           error: (errPago) => {
             console.error('Error generando el pago en MP:', errPago);
-            alert('No pudimos conectar con Mercado Pago. Intentá de nuevo.');
+            this.toast.error('No pudimos conectar con Mercado Pago. Intentá de nuevo.');
           }
         });
 
       },
       error: (err) => {
         console.error('Error al crear la orden:', err);
-        alert(err.error?.message || 'Hubo un problema al procesar tu compra.');
+        this.toast.error(err.error?.message || 'Hubo un problema al procesar tu compra.');
       }
     });
   }

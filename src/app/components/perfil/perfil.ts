@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { ToastService } from '../../services/toast';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -14,6 +15,7 @@ import { jwtDecode } from "jwt-decode";
   templateUrl: './perfil.html'
 })
 export class Perfil implements OnInit {
+  private toast = inject(ToastService);
   usuario: any = {
     id: null, 
     nombre: '', apellido: '', email: '', 
@@ -65,7 +67,7 @@ export class Perfil implements OnInit {
   // ... (guardarDatos, cerrarSesion y cargarHistorial quedan IGUAL que antes) ...
   guardarDatos() {
     if (!this.usuario.id) {
-      alert('Error: No se encontró el ID del usuario.');
+      this.toast.error('Error: No se encontró el ID del usuario.');
       return;
     }
 
@@ -81,11 +83,11 @@ export class Perfil implements OnInit {
     this.http.patch(`https://ecommerce-proyecto-backend.onrender.com/users/${this.usuario.id}`, datosParaActualizar)
       .subscribe({
         next: (res) => {
-          alert('¡Datos actualizados con éxito!');
+          this.toast.exito('¡Datos actualizados con éxito!');
         },
         error: (err) => {
           console.error('Error al actualizar:', err);
-          alert('Error al guardar. Mirá la consola para más detalle.');
+          this.toast.error('No pudimos guardar tus datos. Intentá de nuevo.');
         }
       });
   }

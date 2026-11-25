@@ -9,14 +9,32 @@ Una aplicación Single Page Application (SPA) para un e-commerce de tecnología,
 ## ✨ Características Principales
 
 - **🛍️ Catálogo Dinámico:** Visualización de productos filtrados por categoría.
-- **🛒 Carrito de Compras:** Gestión del estado del carrito en tiempo real (añadir, quitar, modificar cantidades).
+- **🛒 Carrito de Compras:** Gestión del estado del carrito en tiempo real (añadir, quitar y vaciar; se conserva en `localStorage`).
 - **🔐 Autenticación JWT:** Registro e inicio de sesión seguros.
 - **🛡️ Roles de Usuario:**
   - **Cliente:** Acceso a historial de compras y gestión de datos de envío.
   - **Administrador:** Panel de control (Dashboard) para gestionar productos, categorías y actualizar el estado de las órdenes.
-- **💳 Checkout:** Simulación de pasarela de pago (preparado para integración con Mercado Pago).
+- **💳 Checkout:** crea la orden en la API y genera la preferencia de pago de Mercado Pago.
 - **📱 Diseño Responsivo:** Interfaz adaptada a dispositivos móviles y escritorio usando Tailwind CSS.
 
+
+## 🏗️ Arquitectura
+
+```mermaid
+flowchart LR
+  subgraph Angular["Angular 21 (standalone components)"]
+    R[Router] --> C[Componentes<br/>lista, detalle, carrito,<br/>checkout, admin, perfil]
+    C --> S[Servicios<br/>auth · product · cart · ordenes · payments]
+    I[authInterceptor] --> H[HttpClient]
+    S --> H
+  end
+  H -- "HTTPS" --> API[(Tech Store API<br/>NestJS)]
+  S -. "carrito" .-> LS[(localStorage)]
+```
+
+- **Servicios tipados** (`src/app/interfaces/models.ts`) que reflejan el esquema de la API.
+- **Interceptor JWT** que solo adjunta el token a peticiones hacia el propio backend.
+- **Animaciones en CSS puro** (sin librerías) y respeto de `prefers-reduced-motion`; íconos con `lucide-angular`.
 
 ## 🚀 Instalación y Uso
 

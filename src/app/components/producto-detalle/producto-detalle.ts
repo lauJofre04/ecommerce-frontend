@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { ToastService } from '../../services/toast';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../services/product';
@@ -13,6 +14,7 @@ import { CartService } from '../../services/cart'; // <-- Ajustá esta ruta
   templateUrl: './producto-detalle.html'
 })
 export class ProductoDetalle implements OnInit {
+  private toast = inject(ToastService);
   producto: any = null;
   cargando: boolean = true;
 
@@ -66,7 +68,7 @@ export class ProductoDetalle implements OnInit {
       this.cartService.addToCart(this.producto);
       
       // 2. Le damos un aviso visual al usuario
-      alert('¡Producto agregado al carrito!');
+      this.toast.exito('¡Producto agregado al carrito!');
       
       // Opcional: Si querés que lo lleve directo al carrito después de agregar, descomentá esto:
       // this.router.navigate(['/carrito']); 
