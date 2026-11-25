@@ -1,4 +1,4 @@
-<nav class="bg-gray-900 text-white p-3 sm:p-4 shadow-xl sticky top-0 z-50">
+<nav class="nav-vidrio text-white p-3 sm:p-4 shadow-xl sticky top-0 z-50">
   <div class="max-w-6xl mx-auto flex justify-between items-center">
     
     <div class="flex items-center gap-3 sm:gap-8">
@@ -16,16 +16,19 @@
       
       <div routerLink="/carrito" class="relative cursor-pointer hover:scale-110 transition-transform flex items-center">
         <span class="text-xl sm:text-2xl">🛒</span>
-        <span class="bg-red-500 text-white text-[10px] font-bold rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center absolute -top-1 -right-2 sm:-top-2 sm:-right-3 shadow-sm">
-          {{ cartCount }}
-        </span>
+        <!-- El *ngFor sobre [cartCount] recrea el globo al cambiar la cantidad y reinicia la animación -->
+        <ng-container *ngFor="let n of [cartCount]">
+          <span class="anim-bump bg-red-500 text-white text-[10px] font-bold rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center absolute -top-1 -right-2 sm:-top-2 sm:-right-3 shadow-sm">
+            {{ n }}
+          </span>
+        </ng-container>
       </div>
 
       <div *ngIf="!authService.isLoggedIn()" class="flex items-center gap-2 sm:gap-3">
-        <a routerLink="/login" class="bg-blue-600 text-white px-3 py-1.5 sm:px-5 sm:py-2 rounded-lg font-bold hover:bg-blue-700 transition text-xs sm:text-base">
+        <a routerLink="/login" class="btn-glow bg-blue-600 text-white px-3 py-1.5 sm:px-5 sm:py-2 rounded-lg font-bold hover:bg-blue-700 text-xs sm:text-base">
           <span class="hidden sm:inline">Iniciar Sesión</span>
           <span class="sm:hidden">Entrar</span> </a>
-        <a routerLink="/registro" class="hidden md:block bg-green-600 text-white px-5 py-2 rounded-lg font-bold hover:bg-green-700 transition">
+        <a routerLink="/registro" class="btn-glow hidden md:block bg-emerald-600 text-white px-5 py-2 rounded-lg font-bold hover:bg-emerald-700">
           Registrarse
         </a>
       </div>
@@ -38,7 +41,7 @@
           </svg>
         </button>
 
-        <div *ngIf="isMenuOpen" class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50 text-gray-800">
+        <div *ngIf="isMenuOpen" class="anim-menu absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50 text-gray-800">
           <a *ngIf="authService.getRole() === 'ADMIN'" routerLink="/admin" (click)="toggleMenu()" class="block px-4 py-3 hover:bg-blue-50 hover:text-blue-600 font-medium cursor-pointer">
             ⚙️ Panel Admin
           </a>
