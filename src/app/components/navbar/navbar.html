@@ -15,7 +15,7 @@
     <div class="flex items-center gap-3 sm:gap-6">
       
       <div routerLink="/carrito" class="relative cursor-pointer hover:scale-110 transition-transform flex items-center">
-        <span class="text-xl sm:text-2xl">🛒</span>
+        <lucide-icon [img]="iconos.ShoppingCart" [size]="24" [strokeWidth]="1.8" aria-label="Carrito"></lucide-icon>
         <!-- El *ngFor sobre [cartCount] recrea el globo al cambiar la cantidad y reinicia la animación -->
         <ng-container *ngFor="let n of [cartCount]">
           <span class="anim-bump bg-red-500 text-white text-[10px] font-bold rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center absolute -top-1 -right-2 sm:-top-2 sm:-right-3 shadow-sm">
@@ -43,13 +43,13 @@
 
         <div *ngIf="isMenuOpen" class="anim-menu absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50 text-gray-800">
           <a *ngIf="authService.getRole() === 'ADMIN'" routerLink="/admin" (click)="toggleMenu()" class="block px-4 py-3 hover:bg-blue-50 hover:text-blue-600 font-medium cursor-pointer">
-            ⚙️ Panel Admin
+            <lucide-icon [img]="iconos.Settings" [size]="18" class="inline-block align-text-bottom mr-2"></lucide-icon>Panel Admin
           </a>
           <a *ngIf="authService.getRole() === 'CLIENTE'" routerLink="/perfil" (click)="toggleMenu()" class="block px-4 py-3 hover:bg-blue-50 hover:text-blue-600 font-medium transition cursor-pointer">
-            👤 Mi Perfil
+            <lucide-icon [img]="iconos.User" [size]="18" class="inline-block align-text-bottom mr-2"></lucide-icon>Mi Perfil
           </a>
           <button (click)="logout()" class="w-full text-left px-4 py-3 text-red-500 hover:bg-red-50 font-medium border-t border-gray-100">
-            Cerrar Sesión
+            <lucide-icon [img]="iconos.LogOut" [size]="18" class="inline-block align-text-bottom mr-2"></lucide-icon>Cerrar Sesión
           </button>
         </div>
       </div>

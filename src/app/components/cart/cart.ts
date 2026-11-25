@@ -2,14 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CartService } from '../../services/cart';
 import { RouterModule } from '@angular/router';
+import { LucideAngularModule, ShoppingCart } from 'lucide-angular';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule,RouterModule],
+  imports: [CommonModule, RouterModule, LucideAngularModule],
   templateUrl: './cart.html'
 })
 export class Cart implements OnInit {
+  readonly iconos = { ShoppingCart };
   items: any[] = [];
   total = 0;
 

@@ -66,7 +66,7 @@ export class ProductoDetalle implements OnInit {
       this.cartService.addToCart(this.producto);
       
       // 2. Le damos un aviso visual al usuario
-      alert('¡Producto agregado al carrito! 🛒');
+      alert('¡Producto agregado al carrito!');
       
       // Opcional: Si querés que lo lleve directo al carrito después de agregar, descomentá esto:
       // this.router.navigate(['/carrito']); 

@@ -36,7 +36,7 @@ export class VerificarEmail implements OnInit {
           this.cargando = false;
         },
         error: (err) => {
-          this.mensaje = 'El enlace es inválido o ya expiró. ❌';
+          this.mensaje = 'El enlace es inválido o ya expiró.';
           this.cargando = false;
         }
       });

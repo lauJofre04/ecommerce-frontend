@@ -3,14 +3,16 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../services/product';
 import { OrdenesService } from '../../services/ordenes'; // <-- NUEVO
+import { LucideAngularModule, Package, ClipboardList } from 'lucide-angular';
 
 @Component({
   selector: 'app-admin-panel',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, LucideAngularModule],
   templateUrl: './admin-panel.html' 
 })
 export class AdminPanelComponent implements OnInit, OnDestroy {
+  readonly iconos = { Package, ClipboardList };
   newProduct = { nombre: '', descripcion: '', precio: 0, stock: 0, categoriaId:0};
   selectedFile: File | null = null;
   isLoading = false;
