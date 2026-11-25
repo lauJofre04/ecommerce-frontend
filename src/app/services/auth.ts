@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
+import { Credenciales, PayloadToken, RespuestaLogin } from '../interfaces/models';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +13,9 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(credentials: any) {
+  login(credentials: Credenciales) {
     // 2. Le agregamos /login acá
-    return this.http.post<any>(`${this.baseUrl}/login`, credentials).pipe(
+    return this.http.post<RespuestaLogin>(`${this.baseUrl}/login`, credentials).pipe(
       tap(response => {
         const tokenReal = response.access_token || response.token; 
         if (tokenReal) {
@@ -32,7 +33,7 @@ export class AuthService {
     const token = localStorage.getItem('token');
     if (token) {
       try {
-        const decoded: any = jwtDecode(token);
+        const decoded = jwtDecode<PayloadToken>(token);
         return decoded.rol || decoded.role || null; 
       } catch (e) {
         return null;
